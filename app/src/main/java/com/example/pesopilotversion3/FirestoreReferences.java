@@ -9,7 +9,6 @@ public class FirestoreReferences {
         EXPENSES_COLLECTION = "expenses",
         CATEGORIES_COLLECTION = "categories",
         ACCOUNTS_COLLECTION = "accounts",
-        TRANSFERS_COLLECTION = "transfers",
 
         // Fields for User collection
         USERNAME_FIELD = "username",
@@ -18,13 +17,15 @@ public class FirestoreReferences {
         FIRST_NAME_FIELD = "firstName",
         LAST_NAME_FIELD = "lastName",
 
-        // Fields for Income and Expense collection
-        TITLE_FIELD = "title",
-        DESCRIPTION_FIELD = "description",
-        ACCOUNT_FIELD = "account",
-        AMOUNT_FIELD = "amount",
-        CATEGORY_FIELD = "category",
-        TIMESTAMP_FIELD = "date",
+        // Fields for Income collection
+        INCOME_AMOUNT_FIELD = "amount",
+        INCOME_CATEGORY_FIELD = "category",
+        INCOME_TIMESTAMP_FIELD = "timestamp",
+
+        // Fields for Expense collection
+        EXPENSE_AMOUNT_FIELD = "amount",
+        EXPENSE_CATEGORY_FIELD = "category",
+        EXPENSE_TIMESTAMP_FIELD = "timestamp",
 
         // Fields for Category collection
         CATEGORY_NAME_FIELD = "category",
@@ -33,9 +34,5 @@ public class FirestoreReferences {
 
         // Fields for Account collection
         ACCOUNT_NAME_FIELD = "accountName",
-        ACCOUNT_BALANCE_FIELD = "accountAmount",
-
-        // Fields for Transfer collection
-        TRANSFER_SENDER_FIELD = "sender",
-        TRANSFER_RECEIVER_FIELD = "receiver";
+        ACCOUNT_BALANCE_FIELD = "accountAmount";
 }

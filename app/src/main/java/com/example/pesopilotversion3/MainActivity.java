@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -44,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private Button addExpenseBtn;
 
     private LinearLayout expenses;
-    private LinearLayout incomes;
-    private LinearLayout more;
 
     private double totalIncome;
     private double totalExpense;
@@ -71,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
         this.addExpenseBtn = findViewById(R.id.addExpenseButton);
 
         this.expenses = findViewById(R.id.expenses);
-        this.incomes = findViewById(R.id.incomes);
-        this.more = findViewById(R.id.more);
 
         this.totalIncome = 0;
         this.totalExpense = 0;
@@ -104,22 +99,6 @@ public class MainActivity extends AppCompatActivity {
                  startActivity(intent);
              }
         });
-
-        this.incomes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, IncomeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        this.more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MoreActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -136,8 +115,9 @@ public class MainActivity extends AppCompatActivity {
     protected void setRemainingBalance() {
         // set remaining balance
         Query query = dbRef
-                .collection(FirestoreReferences.ACCOUNTS_COLLECTION)
-                .whereEqualTo(FirestoreReferences.USERNAME_FIELD, "admin");
+                .collection(FirestoreReferences.USERS_COLLECTION)
+                .whereEqualTo(FirestoreReferences.USERNAME_FIELD, "admin")
+                .whereEqualTo(FirestoreReferences.PASSWORD_FIELD, "12345");
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -148,17 +128,10 @@ public class MainActivity extends AppCompatActivity {
                         totalIncomeTV.setText("0.00");
                         totalExpenseTV.setText("0.00");
                     } else {
-                        Double total_initial_balance = 0.00;
-                        for (DocumentSnapshot document : task.getResult()) {
-                            Double accountBalance = document.getDouble(FirestoreReferences.BALANCE_FIELD);
-                            if (accountBalance != null) {
-                                total_initial_balance += accountBalance;
-                            }
-                        }
-
-                        total_initial_balance -= totalExpense;
-                        total_initial_balance += totalIncome;
-                        remainingBalanceTV.setText(total_initial_balance.toString());
+                        Double initial_balance = task.getResult().getDocuments().get(0).get(FirestoreReferences.BALANCE_FIELD, Double.class);
+                        initial_balance -= totalExpense;
+                        initial_balance += totalIncome;
+                        remainingBalanceTV.setText(initial_balance.toString());
                     }
                 }
             }
@@ -180,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         totalIncome = 0;
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            totalIncome += document.getDouble(FirestoreReferences.AMOUNT_FIELD);
+                            totalIncome += document.getDouble(FirestoreReferences.INCOME_AMOUNT_FIELD);
                         }
                         totalIncomeTV.setText(String.valueOf(totalIncome));
                         setTotalExpense();
@@ -205,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         totalExpense = 0;
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            totalExpense += document.getDouble(FirestoreReferences.AMOUNT_FIELD);
+                            totalExpense += document.getDouble(FirestoreReferences.EXPENSE_AMOUNT_FIELD);
                         }
                         totalExpenseTV.setText(String.valueOf(totalExpense));
                         setRemainingBalance();

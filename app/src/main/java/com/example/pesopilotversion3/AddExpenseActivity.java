@@ -50,6 +50,7 @@ public class AddExpenseActivity extends AppCompatActivity {
     private ImageView imageExpenseDateValue;
     private Spinner bankAccountSpinner;
 
+    long date_milli;
     Context context;
 
     private Button submitExpenseButton;
@@ -124,12 +125,9 @@ public class AddExpenseActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> expense = new HashMap<>();
-                expense.put(FirestoreReferences.TITLE_FIELD, expenseTitleValue.getText().toString());
-                expense.put(FirestoreReferences.DESCRIPTION_FIELD, expenseDescriptionValue.getText().toString());
-                expense.put(FirestoreReferences.TIMESTAMP_FIELD, textExpenseDateValue.getText().toString());
-                expense.put(FirestoreReferences.AMOUNT_FIELD, Double.parseDouble(expenseAmountValue.getText().toString()));
-                expense.put(FirestoreReferences.ACCOUNT_FIELD, bankAccountSpinner.getSelectedItem().toString());
-                expense.put(FirestoreReferences.CATEGORY_FIELD, categorySpinner.getSelectedItem().toString());
+                expense.put(FirestoreReferences.EXPENSE_AMOUNT_FIELD, Integer.parseInt(expenseAmountValue.getText().toString()));
+                expense.put(FirestoreReferences.EXPENSE_CATEGORY_FIELD, categorySpinner.getSelectedItem().toString());
+                expense.put(FirestoreReferences.EXPENSE_TIMESTAMP_FIELD, textExpenseDateValue.getText().toString());
                 expense.put(FirestoreReferences.USERNAME_FIELD, "admin");
 
                 dbRef.collection(FirestoreReferences.EXPENSES_COLLECTION).add(expense)
