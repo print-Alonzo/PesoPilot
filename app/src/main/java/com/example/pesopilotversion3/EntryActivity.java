@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -92,8 +93,13 @@ public class EntryActivity extends AppCompatActivity {
             return;
         }
 
-        dbRef.collection(FirestoreReferences.EXPENSES_COLLECTION)
-                .document(entryDocumentId)
+        CollectionReference collection;
+        if (entry_type.getText().toString().equals("expense"))
+            collection = dbRef.collection(FirestoreReferences.EXPENSES_COLLECTION);
+        else
+            collection = dbRef.collection(FirestoreReferences.INCOMES_COLLECTION);
+
+        collection.document(entryDocumentId)
                 .delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
