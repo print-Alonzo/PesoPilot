@@ -1,5 +1,6 @@
 package com.example.pesopilotversion3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,7 +39,7 @@ public class ExpenseActivity extends AppCompatActivity {
 
     private Spinner time_filter_spinner;
     private Spinner category_filter_spinner;
-    private Button filter_button;
+    private Button addExpenseButton;
 
     private RecyclerView recyclerView;
     private MyFirestoreRecyclerAdapter myFirestoreRecyclerAdapter;
@@ -134,11 +135,15 @@ public class ExpenseActivity extends AppCompatActivity {
                     @Override
                     public ExpenseIncomeEntry parseSnapshot(@Nullable DocumentSnapshot snapshot) {
                         ExpenseIncomeEntry temp = new ExpenseIncomeEntry(
-                                snapshot.getString("title"),
-                                snapshot.getString("timestamp"),
-                                snapshot.getDouble("amount"),
-                                snapshot.getString("account"),
-                                snapshot.getString("category")
+                                snapshot.getId(),
+                                snapshot.getString(FirestoreReferences.TITLE_FIELD),
+                                snapshot.getString(FirestoreReferences.DESCRIPTION_FIELD),
+                                snapshot.getString(FirestoreReferences.TIMESTAMP_FIELD),
+                                snapshot.getDouble(FirestoreReferences.AMOUNT_FIELD),
+                                snapshot.getString(FirestoreReferences.ACCOUNT_FIELD),
+                                snapshot.getString(FirestoreReferences.CATEGORY_FIELD),
+                                snapshot.getString(FirestoreReferences.USERNAME_FIELD),
+                                "Expense"
                         );
 
                         return temp;
@@ -155,11 +160,21 @@ public class ExpenseActivity extends AppCompatActivity {
         });
 
         this.recyclerView.setAdapter(this.myFirestoreRecyclerAdapter);
+        this.myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, this.myFirestoreRecyclerAdapter.getItemCount());
+        this.myFirestoreRecyclerAdapter.notifyDataSetChanged();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(false);
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         this.recyclerView.setLayoutManager(linearLayoutManager);
+
+        this.addExpenseButton = findViewById(R.id.addExpenseButton);
+        this.addExpenseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ExpenseActivity.this, AddExpenseActivity.class));
+            }
+        });
     }
 
     private void updateExpenses() {
@@ -173,16 +188,16 @@ public class ExpenseActivity extends AppCompatActivity {
         String today = getFormattedDate(Calendar.getInstance());
         switch (selectedTimeFilter) {
             case "Today":
-                expenseQuery = expenseQuery.whereEqualTo("timestamp", today);
+                expenseQuery = expenseQuery.whereEqualTo(FirestoreReferences.TIMESTAMP_FIELD, today);
                 break;
             case "This Week":
-                expenseQuery = expenseQuery.whereGreaterThanOrEqualTo("timestamp", getFormattedDate(getStartOfWeek()));
+                expenseQuery = expenseQuery.whereGreaterThanOrEqualTo(FirestoreReferences.TIMESTAMP_FIELD, getFormattedDate(getStartOfWeek()));
                 break;
             case "This Month":
-                expenseQuery = expenseQuery.whereGreaterThanOrEqualTo("timestamp", getFormattedDate(getStartOfMonth()));
+                expenseQuery = expenseQuery.whereGreaterThanOrEqualTo(FirestoreReferences.TIMESTAMP_FIELD, getFormattedDate(getStartOfMonth()));
                 break;
             case "This Year":
-                expenseQuery = expenseQuery.whereGreaterThanOrEqualTo("timestamp", getFormattedDate(getStartOfYear()));
+                expenseQuery = expenseQuery.whereGreaterThanOrEqualTo(FirestoreReferences.TIMESTAMP_FIELD, getFormattedDate(getStartOfYear()));
                 break;
             default: // "All"
                 break;
@@ -199,11 +214,15 @@ public class ExpenseActivity extends AppCompatActivity {
                     @Override
                     public ExpenseIncomeEntry parseSnapshot(@Nullable DocumentSnapshot snapshot) {
                         return new ExpenseIncomeEntry(
-                                snapshot.getString("title"),
-                                snapshot.getString("timestamp"),
-                                snapshot.getDouble("amount"),
-                                snapshot.getString("account"),
-                                snapshot.getString("category")
+                                snapshot.getId(),
+                                snapshot.getString(FirestoreReferences.TITLE_FIELD),
+                                snapshot.getString(FirestoreReferences.DESCRIPTION_FIELD),
+                                snapshot.getString(FirestoreReferences.TIMESTAMP_FIELD),
+                                snapshot.getDouble(FirestoreReferences.AMOUNT_FIELD),
+                                snapshot.getString(FirestoreReferences.ACCOUNT_FIELD),
+                                snapshot.getString(FirestoreReferences.CATEGORY_FIELD),
+                                snapshot.getString(FirestoreReferences.USERNAME_FIELD),
+                                "expense"
                         );
                     }
                 })
@@ -256,6 +275,8 @@ public class ExpenseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         this.myFirestoreRecyclerAdapter.startListening();
+        this.myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, this.myFirestoreRecyclerAdapter.getItemCount());
+        this.myFirestoreRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override

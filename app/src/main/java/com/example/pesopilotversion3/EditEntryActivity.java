@@ -131,27 +131,23 @@ public class EditEntryActivity extends AppCompatActivity {
         }
 
         // Update expense in Firestore
-        DocumentReference docRef = null;
-        if (getIntent().getExtras().getString("entry_type").equals("expense"))
-            docRef = dbRef.collection(FirestoreReferences.EXPENSES_COLLECTION).document(doc_id);
-        else if (getIntent().getExtras().getString("entry_type").equals("income"))
-            docRef = dbRef.collection(FirestoreReferences.INCOMES_COLLECTION).document(doc_id);
+        DocumentReference expenseDocRef = dbRef.collection(FirestoreReferences.EXPENSES_COLLECTION).document(doc_id);
 
-        docRef.update(
-                FirestoreReferences.TITLE_FIELD, title,
-                FirestoreReferences.AMOUNT_FIELD, amount,
-                FirestoreReferences.TIMESTAMP_FIELD, date,
-                FirestoreReferences.CATEGORY_FIELD, category,
-                FirestoreReferences.ACCOUNT_FIELD, account,
-                FirestoreReferences.DESCRIPTION_FIELD, description
+        expenseDocRef.update(
+                "title", title,
+                "amount", amount,
+                "timestamp", date,
+                "category", category,
+                "account", account,
+                "description", description
         ).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(EditEntryActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditEntryActivity.this, "Expense updated successfully", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    Toast.makeText(EditEntryActivity.this, "Failed to update entry", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditEntryActivity.this, "Failed to update expense", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -232,6 +228,7 @@ public class EditEntryActivity extends AppCompatActivity {
                 int d = calendar.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog=new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         text_edit_date.setText(year+"-"+String.format("%02d",month+1)+"-"+String.format("%02d",dayOfMonth));

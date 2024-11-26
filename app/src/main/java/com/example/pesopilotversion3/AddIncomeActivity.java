@@ -125,9 +125,9 @@ public class AddIncomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> income = new HashMap<>();
-                income.put(FirestoreReferences.INCOME_AMOUNT_FIELD, Integer.parseInt(incomeAmountValue.getText().toString()));
-                income.put(FirestoreReferences.INCOME_CATEGORY_FIELD, categorySpinner.getSelectedItem().toString());
-                income.put(FirestoreReferences.INCOME_TIMESTAMP_FIELD, textIncomeDateValue.getText().toString());
+                income.put(FirestoreReferences.AMOUNT_FIELD, Integer.parseInt(incomeAmountValue.getText().toString()));
+                income.put(FirestoreReferences.CATEGORY_FIELD, categorySpinner.getSelectedItem().toString());
+                income.put(FirestoreReferences.TIMESTAMP_FIELD, textIncomeDateValue.getText().toString());
                 income.put(FirestoreReferences.USERNAME_FIELD, "admin");
 
                 dbRef.collection(FirestoreReferences.INCOMES_COLLECTION).add(income)

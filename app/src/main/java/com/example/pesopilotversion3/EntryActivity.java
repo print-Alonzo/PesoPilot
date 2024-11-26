@@ -2,23 +2,16 @@ package com.example.pesopilotversion3;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -30,8 +23,6 @@ public class EntryActivity extends AppCompatActivity {
     private Button editExpenseButton, deleteExpenseButton;
 
     private FirebaseFirestore dbRef;
-
-    private String entryDocumentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,80 +47,25 @@ public class EntryActivity extends AppCompatActivity {
 
         this.dbRef = FirebaseFirestore.getInstance();
 
-        this.entryDocumentId = getIntent().getStringExtra("doc_id");
-
         loadEntryDetails();
 
         this.editExpenseButton = findViewById(R.id.editExpenseButton);
         this.editExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editEntry();
+                Intent intent = new Intent(v.getContext(), EditEntryActivity.class);
+                intent.putExtra("doc_id", doc_id.getText().toString());
+                intent.putExtra("title", title.getText().toString());
+                intent.putExtra("description", description.getText().toString());
+                intent.putExtra("date", date.getText().toString());
+                intent.putExtra("amount", amount.getText().toString());
+                intent.putExtra("account", account.getText().toString());
+                intent.putExtra("category", category.getText().toString());
+                intent.putExtra("username", username.getText().toString());
+                intent.putExtra("entry_type", entry_type.getText().toString());
+                startActivity(intent);
             }
         });
-
-        this.deleteExpenseButton = findViewById(R.id.deleteExpenseButton);
-        this.deleteExpenseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmDeleteEntry();
-            }
-        });
-
-    }
-
-    private void confirmDeleteEntry() {
-        new AlertDialog.Builder(this)
-                .setTitle("Delete Entry")
-                .setMessage("Are you sure you want to delete this entry?")
-                .setPositiveButton("Delete", (dialog, which) -> deleteEntry())
-                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
-                .show();
-    }
-
-    private void deleteEntry() {
-        if (entryDocumentId == null || entryDocumentId.isEmpty()) {
-            Toast.makeText(this, "Invalid entry ID", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        CollectionReference collection;
-        if (entry_type.getText().toString().equals("expense"))
-            collection = dbRef.collection(FirestoreReferences.EXPENSES_COLLECTION);
-        else
-            collection = dbRef.collection(FirestoreReferences.INCOMES_COLLECTION);
-
-        collection.document(entryDocumentId)
-                .delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "Entry successfully deleted.");
-                            Toast.makeText(EntryActivity.this, "Entry deleted", Toast.LENGTH_SHORT).show();
-                            finish(); // Close the activity after deletion
-                        } else {
-                            Log.e(TAG, "Error deleting entry", task.getException());
-                            Toast.makeText(EntryActivity.this, "Error deleting entry", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-        finish();
-    }
-
-    private void editEntry() {
-        Intent intent = new Intent(EntryActivity.this, EditEntryActivity.class);
-        intent.putExtra("doc_id", doc_id.getText().toString());
-        intent.putExtra("title", title.getText().toString());
-        intent.putExtra("description", description.getText().toString());
-        intent.putExtra("date", date.getText().toString());
-        intent.putExtra("amount", amount.getText().toString());
-        intent.putExtra("account", account.getText().toString());
-        intent.putExtra("category", category.getText().toString());
-        intent.putExtra("username", username.getText().toString());
-        intent.putExtra("entry_type", entry_type.getText().toString());
-        startActivity(intent);
     }
 
     private void loadEntryDetails() {

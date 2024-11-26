@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         totalIncome = 0;
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            totalIncome += document.getDouble(FirestoreReferences.INCOME_AMOUNT_FIELD);
+                            totalIncome += document.getDouble(FirestoreReferences.AMOUNT_FIELD);
                         }
                         totalIncomeTV.setText(String.valueOf(totalIncome));
                         setTotalExpense();
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         totalExpense = 0;
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            totalExpense += document.getDouble(FirestoreReferences.EXPENSE_AMOUNT_FIELD);
+                            totalExpense += document.getDouble(FirestoreReferences.AMOUNT_FIELD);
                         }
                         totalExpenseTV.setText(String.valueOf(totalExpense));
                         setRemainingBalance();
