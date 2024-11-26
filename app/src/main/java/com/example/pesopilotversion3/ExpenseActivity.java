@@ -258,6 +258,8 @@ public class ExpenseActivity extends AppCompatActivity {
         myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getReference().delete()
                 .addOnSuccessListener(aVoid -> {
                     myFirestoreRecyclerAdapter.notifyItemRemoved(position);
+                    myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, myFirestoreRecyclerAdapter.getItemCount()-1);
+                    myFirestoreRecyclerAdapter.notifyDataSetChanged();
                     showUndoSnackbar();
                 })
                 .addOnFailureListener(e -> {
