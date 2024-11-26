@@ -1,69 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="8dp">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/preview_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/white">
+        android:text="Expense Title"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
-        <!-- Expense Title -->
-        <TextView
-            android:id="@+id/preview_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Expense Title"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:fontFamily="sans-serif-medium"
-            android:textStyle="bold"
-            android:paddingBottom="8dp" />
+    <TextView
+        android:id="@+id/preview_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp" />
 
-        <!-- Expense Description -->
-        <TextView
-            android:id="@+id/preview_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:paddingBottom="8dp" />
+    <TextView
+        android:id="@+id/preview_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Amount"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp" />
 
-        <!-- Expense Amount -->
-        <TextView
-            android:id="@+id/preview_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Amount"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:paddingBottom="8dp" />
+    <TextView
+        android:id="@+id/preview_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Category"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp" />
 
-        <!-- Expense Category -->
-        <TextView
-            android:id="@+id/preview_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Category"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:paddingBottom="16dp" />
-
-        <!-- Open Button -->
-        <Button
-            android:id="@+id/preview_open_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Open"
-            android:backgroundTint="@color/green"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-medium"
-            android:padding="12dp" />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/preview_open_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Open" />
+</LinearLayout>

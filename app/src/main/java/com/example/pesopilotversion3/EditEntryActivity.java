@@ -134,12 +134,12 @@ public class EditEntryActivity extends AppCompatActivity {
         DocumentReference expenseDocRef = dbRef.collection(FirestoreReferences.EXPENSES_COLLECTION).document(doc_id);
 
         expenseDocRef.update(
-                "title", title,
-                "amount", amount,
-                "timestamp", date,
-                "category", category,
-                "account", account,
-                "description", description
+                FirestoreReferences.TITLE_FIELD, title,
+                FirestoreReferences.AMOUNT_FIELD, amount,
+                FirestoreReferences.TIMESTAMP_FIELD, date,
+                FirestoreReferences.CATEGORY_FIELD, category,
+                FirestoreReferences.ACCOUNT_FIELD, account,
+                FirestoreReferences.DESCRIPTION_FIELD, description
         ).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

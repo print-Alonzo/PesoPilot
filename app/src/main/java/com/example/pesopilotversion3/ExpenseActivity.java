@@ -1,6 +1,9 @@
 package com.example.pesopilotversion3;
 
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,14 +11,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +34,7 @@ import com.google.firebase.firestore.Query;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +55,10 @@ public class ExpenseActivity extends AppCompatActivity {
 
     private String[] expenseTimeFilters = {"All", "Today", "This Week", "This Month", "This Year"};
     private ArrayList<String> expenseCategoryFilters;
+
+    private ExpenseIncomeEntry recentlyDeletedItem;
+    private int recentlyDeletedItemPosition;
+    private String recentlyDeletedDocumentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +186,109 @@ public class ExpenseActivity extends AppCompatActivity {
                 startActivity(new Intent(ExpenseActivity.this, AddExpenseActivity.class));
             }
         });
+
+        ItemTouchHelper deleteItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            private final ColorDrawable background = new ColorDrawable(Color.RED);
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false; // We don't support move in this case
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getBindingAdapterPosition();
+                deleteItemWithUndo(position);
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                    @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                                    int actionState, boolean isCurrentlyActive) {
+                // Draw a red background while swiping
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    background.setBounds(viewHolder.itemView.getRight() + (int) dX,
+                            viewHolder.itemView.getTop(), viewHolder.itemView.getRight(),
+                            viewHolder.itemView.getBottom());
+                    background.draw(c);
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        });
+        deleteItemTouchHelper.attachToRecyclerView(recyclerView);
+
+        ItemTouchHelper editItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            private final ColorDrawable background = new ColorDrawable(Color.GREEN);
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false; // We don't support move in this case
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getBindingAdapterPosition();
+                editEntry(position);
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+                                    @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                                    int actionState, boolean isCurrentlyActive) {
+                // Draw a green background while swiping
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    background.setBounds(viewHolder.itemView.getLeft() + (int) dX,
+                            viewHolder.itemView.getTop(), viewHolder.itemView.getLeft(),
+                            viewHolder.itemView.getBottom());
+                    background.draw(c);
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        });
+        editItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    private void deleteItemWithUndo(int position) {
+        // Save details of the deleted item
+        recentlyDeletedItem = myFirestoreRecyclerAdapter.getSnapshots().get(position);
+        recentlyDeletedItemPosition = position;
+        recentlyDeletedDocumentId = myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getId();
+
+        // Remove the item from the adapter
+        myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getReference().delete()
+                .addOnSuccessListener(aVoid -> {
+                    myFirestoreRecyclerAdapter.notifyItemRemoved(position);
+                    showUndoSnackbar();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to delete item", Toast.LENGTH_SHORT).show();
+                    myFirestoreRecyclerAdapter.notifyItemChanged(position);
+                });
+    }
+
+    private void showUndoSnackbar() {
+        Snackbar snackbar = Snackbar.make(recyclerView, "Item deleted", Snackbar.LENGTH_LONG)
+                .setAction("UNDO", v -> undoDelete());
+        snackbar.show();
+    }
+
+    private void undoDelete() {
+        if (recentlyDeletedItem != null) {
+            // Restore the deleted item to Firestore
+            dbRef.collection("expenses") // Replace with your collection name
+                    .document(recentlyDeletedDocumentId)
+                    .set(recentlyDeletedItem)
+                    .addOnSuccessListener(aVoid -> {
+                        // Re-add the item to the adapter
+                        myFirestoreRecyclerAdapter.notifyItemInserted(recentlyDeletedItemPosition);
+                        myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, myFirestoreRecyclerAdapter.getItemCount());
+                        myFirestoreRecyclerAdapter.notifyDataSetChanged();
+                        Toast.makeText(this, "Item restored", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Failed to restore item", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
 
     private void updateExpenses() {
@@ -231,6 +345,21 @@ public class ExpenseActivity extends AppCompatActivity {
         this.myFirestoreRecyclerAdapter.updateOptions(updatedOptions);
         this.myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, this.myFirestoreRecyclerAdapter.getItemCount());
         this.myFirestoreRecyclerAdapter.notifyDataSetChanged();
+    }
+
+    private void editEntry(int position) {
+        String documentId = myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getId();
+        Intent intent = new Intent(this, EditEntryActivity.class);
+        intent.putExtra("doc_id", documentId);
+        intent.putExtra("title", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.TITLE_FIELD));
+        intent.putExtra("description", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.DESCRIPTION_FIELD));
+        intent.putExtra("date", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.TIMESTAMP_FIELD));
+        intent.putExtra("amount", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getDouble(FirestoreReferences.AMOUNT_FIELD).toString());
+        intent.putExtra("account", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.ACCOUNT_FIELD));
+        intent.putExtra("category", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.CATEGORY_FIELD));
+        intent.putExtra("username", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.USERNAME_FIELD));
+        intent.putExtra("entry_type", "expense");
+        startActivity(intent);
     }
 
     private String getFormattedDate(Calendar calendar) {

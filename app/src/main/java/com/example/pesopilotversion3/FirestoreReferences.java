@@ -23,7 +23,7 @@ public class FirestoreReferences {
         ACCOUNT_FIELD = "account",
         AMOUNT_FIELD = "amount",
         CATEGORY_FIELD = "category",
-        TIMESTAMP_FIELD = "timestamp",
+        TIMESTAMP_FIELD = "date",
 
         // Fields for Category collection
         CATEGORY_NAME_FIELD = "category",
