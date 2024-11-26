@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private LinearLayout expenses;
     private LinearLayout incomes;
+    private LinearLayout more;
 
     private double totalIncome;
     private double totalExpense;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.expenses = findViewById(R.id.expenses);
         this.incomes = findViewById(R.id.incomes);
+        this.more = findViewById(R.id.more);
 
         this.totalIncome = 0;
         this.totalExpense = 0;
@@ -106,6 +108,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, IncomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        this.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MoreActivity.class);
                 startActivity(intent);
             }
         });

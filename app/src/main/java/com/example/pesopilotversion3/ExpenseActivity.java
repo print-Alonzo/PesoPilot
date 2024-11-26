@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -49,7 +48,7 @@ public class ExpenseActivity extends AppCompatActivity {
     private Button addExpenseButton;
 
     private RecyclerView recyclerView;
-    private MyFirestoreRecyclerAdapter myFirestoreRecyclerAdapter;
+    private ExpenseIncomeRecyclerAdapter expenseIncomeRecyclerAdapter;
 
     private FirebaseFirestore dbRef;
 
@@ -162,17 +161,17 @@ public class ExpenseActivity extends AppCompatActivity {
                 })
                 .build();
 
-        this.myFirestoreRecyclerAdapter = new MyFirestoreRecyclerAdapter(options);
-        this.myFirestoreRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        this.expenseIncomeRecyclerAdapter = new ExpenseIncomeRecyclerAdapter(options);
+        this.expenseIncomeRecyclerAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                recyclerView.scrollToPosition(myFirestoreRecyclerAdapter.getItemCount() - 1);
+                recyclerView.scrollToPosition(expenseIncomeRecyclerAdapter.getItemCount() - 1);
             }
         });
 
-        this.recyclerView.setAdapter(this.myFirestoreRecyclerAdapter);
-        this.myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, this.myFirestoreRecyclerAdapter.getItemCount());
-        this.myFirestoreRecyclerAdapter.notifyDataSetChanged();
+        this.recyclerView.setAdapter(this.expenseIncomeRecyclerAdapter);
+        this.expenseIncomeRecyclerAdapter.notifyItemRangeChanged(0, this.expenseIncomeRecyclerAdapter.getItemCount());
+        this.expenseIncomeRecyclerAdapter.notifyDataSetChanged();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(false);
@@ -250,21 +249,21 @@ public class ExpenseActivity extends AppCompatActivity {
 
     private void deleteItemWithUndo(int position) {
         // Save details of the deleted item
-        recentlyDeletedItem = myFirestoreRecyclerAdapter.getSnapshots().get(position);
+        recentlyDeletedItem = expenseIncomeRecyclerAdapter.getSnapshots().get(position);
         recentlyDeletedItemPosition = position;
-        recentlyDeletedDocumentId = myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getId();
+        recentlyDeletedDocumentId = expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getId();
 
         // Remove the item from the adapter
-        myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getReference().delete()
+        expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getReference().delete()
                 .addOnSuccessListener(aVoid -> {
-                    myFirestoreRecyclerAdapter.notifyItemRemoved(position);
-                    myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, myFirestoreRecyclerAdapter.getItemCount()-1);
-                    myFirestoreRecyclerAdapter.notifyDataSetChanged();
+                    expenseIncomeRecyclerAdapter.notifyItemRemoved(position);
+                    expenseIncomeRecyclerAdapter.notifyItemRangeChanged(0, expenseIncomeRecyclerAdapter.getItemCount()-1);
+                    expenseIncomeRecyclerAdapter.notifyDataSetChanged();
                     showUndoSnackbar();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to delete item", Toast.LENGTH_SHORT).show();
-                    myFirestoreRecyclerAdapter.notifyItemChanged(position);
+                    expenseIncomeRecyclerAdapter.notifyItemChanged(position);
                 });
     }
 
@@ -282,9 +281,9 @@ public class ExpenseActivity extends AppCompatActivity {
                     .set(recentlyDeletedItem)
                     .addOnSuccessListener(aVoid -> {
                         // Re-add the item to the adapter
-                        myFirestoreRecyclerAdapter.notifyItemInserted(recentlyDeletedItemPosition);
-                        myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, myFirestoreRecyclerAdapter.getItemCount());
-                        myFirestoreRecyclerAdapter.notifyDataSetChanged();
+                        expenseIncomeRecyclerAdapter.notifyItemInserted(recentlyDeletedItemPosition);
+                        expenseIncomeRecyclerAdapter.notifyItemRangeChanged(0, expenseIncomeRecyclerAdapter.getItemCount());
+                        expenseIncomeRecyclerAdapter.notifyDataSetChanged();
                         Toast.makeText(this, "Item restored", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(e -> {
@@ -344,22 +343,22 @@ public class ExpenseActivity extends AppCompatActivity {
                 })
                 .build();
 
-        this.myFirestoreRecyclerAdapter.updateOptions(updatedOptions);
-        this.myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, this.myFirestoreRecyclerAdapter.getItemCount());
-        this.myFirestoreRecyclerAdapter.notifyDataSetChanged();
+        this.expenseIncomeRecyclerAdapter.updateOptions(updatedOptions);
+        this.expenseIncomeRecyclerAdapter.notifyItemRangeChanged(0, this.expenseIncomeRecyclerAdapter.getItemCount());
+        this.expenseIncomeRecyclerAdapter.notifyDataSetChanged();
     }
 
     private void editEntry(int position) {
-        String documentId = myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getId();
+        String documentId = expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getId();
         Intent intent = new Intent(this, EditEntryActivity.class);
         intent.putExtra("doc_id", documentId);
-        intent.putExtra("title", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.TITLE_FIELD));
-        intent.putExtra("description", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.DESCRIPTION_FIELD));
-        intent.putExtra("date", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.TIMESTAMP_FIELD));
-        intent.putExtra("amount", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getDouble(FirestoreReferences.AMOUNT_FIELD).toString());
-        intent.putExtra("account", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.ACCOUNT_FIELD));
-        intent.putExtra("category", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.CATEGORY_FIELD));
-        intent.putExtra("username", myFirestoreRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.USERNAME_FIELD));
+        intent.putExtra("title", expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.TITLE_FIELD));
+        intent.putExtra("description", expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.DESCRIPTION_FIELD));
+        intent.putExtra("date", expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.TIMESTAMP_FIELD));
+        intent.putExtra("amount", expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getDouble(FirestoreReferences.AMOUNT_FIELD).toString());
+        intent.putExtra("account", expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.ACCOUNT_FIELD));
+        intent.putExtra("category", expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.CATEGORY_FIELD));
+        intent.putExtra("username", expenseIncomeRecyclerAdapter.getSnapshots().getSnapshot(position).getString(FirestoreReferences.USERNAME_FIELD));
         intent.putExtra("entry_type", "expense");
         startActivity(intent);
     }
@@ -405,14 +404,14 @@ public class ExpenseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        this.myFirestoreRecyclerAdapter.startListening();
-        this.myFirestoreRecyclerAdapter.notifyItemRangeChanged(0, this.myFirestoreRecyclerAdapter.getItemCount());
-        this.myFirestoreRecyclerAdapter.notifyDataSetChanged();
+        this.expenseIncomeRecyclerAdapter.startListening();
+        this.expenseIncomeRecyclerAdapter.notifyItemRangeChanged(0, this.expenseIncomeRecyclerAdapter.getItemCount());
+        this.expenseIncomeRecyclerAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        this.myFirestoreRecyclerAdapter.stopListening();
+        this.expenseIncomeRecyclerAdapter.stopListening();
     }
 }

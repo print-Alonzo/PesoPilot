@@ -9,6 +9,7 @@ public class FirestoreReferences {
         EXPENSES_COLLECTION = "expenses",
         CATEGORIES_COLLECTION = "categories",
         ACCOUNTS_COLLECTION = "accounts",
+        TRANSFERS_COLLECTION = "transfers",
 
         // Fields for User collection
         USERNAME_FIELD = "username",
@@ -32,5 +33,9 @@ public class FirestoreReferences {
 
         // Fields for Account collection
         ACCOUNT_NAME_FIELD = "accountName",
-        ACCOUNT_BALANCE_FIELD = "accountAmount";
+        ACCOUNT_BALANCE_FIELD = "accountAmount",
+
+        // Fields for Transfer collection
+        TRANSFER_SENDER_FIELD = "sender",
+        TRANSFER_RECEIVER_FIELD = "receiver";
 }
