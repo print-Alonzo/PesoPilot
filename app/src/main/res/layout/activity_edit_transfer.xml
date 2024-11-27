@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/edit_transfer_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkgreen"
+    tools:context=".EditTransferActivity">
+
+    <!-- Main Card Background -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/edit_transfer_card"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/white">
+
+            <!-- Edit Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingBottom="4dp" />
+
+            <EditText
+                android:id="@+id/edit_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter title"
+                android:inputType="text"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp" />
+
+            <!-- Edit Description -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
+
+            <EditText
+                android:id="@+id/edit_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter description"
+                android:inputType="text"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp" />
+
+            <!-- Edit Date -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/text_edit_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Select Date"
+                    android:textSize="16sp"
+                    android:background="@drawable/textview_background"
+                    android:padding="12dp"
+                    android:gravity="center" />
+
+                <ImageView
+                    android:id="@+id/image_edit_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@android:drawable/ic_menu_today"
+                    android:padding="8dp"
+                    android:contentDescription="Select Date" />
+            </LinearLayout>
+
+            <!-- Edit Amount -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Amount"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
+
+            <EditText
+                android:id="@+id/edit_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter amount"
+                android:inputType="numberDecimal"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp" />
+
+            <!-- Sender Account Spinner -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sender Account"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
+
+            <Spinner
+                android:id="@+id/edit_sender_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                android:padding="12dp" />
+
+            <!-- Receiver Account Spinner -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Receiver Account"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
+
+            <Spinner
+                android:id="@+id/edit_receiver_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                android:padding="12dp" />
+
+            <!-- Save and Cancel Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="16dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/editEntryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:backgroundTint="@color/green"
+                    android:textColor="@android:color/white"
+                    android:padding="12dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginEnd="8dp" />
+
+                <Button
+                    android:id="@+id/cancelEditEntryButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel"
+                    android:backgroundTint="@color/darkgreen"
+                    android:textColor="@color/white"
+                    android:padding="12dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_marginStart="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

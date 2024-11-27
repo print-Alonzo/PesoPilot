@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "625254234991",
+    "firebase_url": "https://pesopilot-ed15d-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "pesopilot-ed15d",
+    "storage_bucket": "pesopilot-ed15d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625254234991:android:c2141f516c6f821893c69a",
+        "android_client_info": {
+          "package_name": "com.example.pesopilotversion3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnNcmfgtRdIrDLE7FABhsZMXTTiRdj-94"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
