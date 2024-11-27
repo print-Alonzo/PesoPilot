@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_margin="16dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="8dp">
 
-    <TextView
-        android:id="@+id/preview_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Transfer Title"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/white">
 
-    <TextView
-        android:id="@+id/preview_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Description"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        <!-- Transfer Title -->
+        <TextView
+            android:id="@+id/preview_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Transfer Title"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif-medium"
+            android:paddingBottom="8dp" />
 
-    <TextView
-        android:id="@+id/preview_amount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Amount"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        <!-- Description -->
+        <TextView
+            android:id="@+id/preview_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp" />
 
-    <TextView
-        android:id="@+id/preview_sender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sender"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        <!-- Amount -->
+        <TextView
+            android:id="@+id/preview_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Amount"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp" />
 
-    <TextView
-        android:id="@+id/preview_receiver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Receiver"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp" />
+        <!-- Sender -->
+        <TextView
+            android:id="@+id/preview_sender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sender"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp" />
 
-    <Button
-        android:id="@+id/preview_open_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Open" />
+        <!-- Receiver -->
+        <TextView
+            android:id="@+id/preview_receiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Receiver"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:paddingBottom="16dp" />
 
-</LinearLayout>
+        <!-- Open Button -->
+        <Button
+            android:id="@+id/preview_open_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Open"
+            android:backgroundTint="@color/green"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif-medium"
+            android:padding="12dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

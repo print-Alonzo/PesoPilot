@@ -1,63 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/add_transfer_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/darkgreen"
     tools:context=".AddTransferActivity">
 
-    <EditText
-        android:id="@+id/transferTitleValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:text="Transfer Title" />
+    <!-- Main Card Background -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/add_transfer_card"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <EditText
-        android:id="@+id/transferDescriptionValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:text="Description" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/white">
 
-    <EditText
-        android:id="@+id/transferAmountValue"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number|numberDecimal" />
+            <!-- Transfer Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Transfer Title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingBottom="4dp" />
 
-    <Spinner
-        android:id="@+id/senderAccountSpinner"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:spinnerMode="dropdown" />
+            <EditText
+                android:id="@+id/transferTitleValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter title"
+                android:inputType="text"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp" />
 
-    <Spinner
-        android:id="@+id/receiverAccountSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+            <!-- Transfer Description -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
 
-    <TextView
-        android:id="@+id/textTransferDateValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="date"
-        android:textSize="50px"
-        android:gravity="center" />
+            <EditText
+                android:id="@+id/transferDescriptionValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter description"
+                android:inputType="text"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp" />
 
-    <ImageView
-        android:id="@+id/imageTransferDateValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_today"
-        tools:ignore="UnknownId" />
+            <!-- Transfer Amount -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Amount"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
 
-    <Button
-        android:id="@+id/submitTransferButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Transfer" />
+            <EditText
+                android:id="@+id/transferAmountValue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter amount"
+                android:inputType="numberDecimal"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp" />
 
-</LinearLayout>
+            <!-- Sender Account Spinner -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sender Account"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
+
+            <Spinner
+                android:id="@+id/senderAccountSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                android:padding="12dp" />
+
+            <!-- Receiver Account Spinner -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Receiver Account"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
+
+            <Spinner
+                android:id="@+id/receiverAccountSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/spinner_background"
+                android:padding="12dp" />
+
+            <!-- Transfer Date -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Transfer Date"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium"
+                android:paddingTop="12dp"
+                android:paddingBottom="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/textTransferDateValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Select Date"
+                    android:textSize="16sp"
+                    android:background="@drawable/textview_background"
+                    android:padding="12dp"
+                    android:gravity="center" />
+
+                <ImageView
+                    android:id="@+id/imageTransferDateValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@android:drawable/ic_menu_today"
+                    android:padding="8dp"
+                    android:contentDescription="Select Date" />
+            </LinearLayout>
+
+            <!-- Submit Button -->
+            <Button
+                android:id="@+id/submitTransferButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add Transfer"
+                android:backgroundTint="@color/green"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="16dp"
+                android:padding="12dp"
+                android:fontFamily="sans-serif-medium" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
