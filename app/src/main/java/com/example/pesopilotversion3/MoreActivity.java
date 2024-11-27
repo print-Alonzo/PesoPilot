@@ -11,15 +11,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class MoreActivity extends AppCompatActivity {
     private Button transfers, accounts, categories, edit_account, reset_account, logout;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_more);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.more_activity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -39,5 +42,32 @@ public class MoreActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.bottom_home) {
+                startActivity(new Intent(MoreActivity.this, MainActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.bottom_expense) {
+                startActivity(new Intent(MoreActivity.this, ExpenseActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.bottom_income) {
+                startActivity(new Intent(MoreActivity.this, IncomeActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.bottom_more) {
+                return true;
+            }
+
+            return false;
+        });
+
     }
 }

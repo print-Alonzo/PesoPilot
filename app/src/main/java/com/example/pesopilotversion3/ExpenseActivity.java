@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.SnapshotParser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -46,6 +48,7 @@ public class ExpenseActivity extends AppCompatActivity {
     private Spinner time_filter_spinner;
     private Spinner category_filter_spinner;
     private Button addExpenseButton;
+    private BottomNavigationView bottomNavigationView;
 
     private RecyclerView recyclerView;
     private ExpenseIncomeRecyclerAdapter expenseIncomeRecyclerAdapter;
@@ -64,11 +67,38 @@ public class ExpenseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_expense);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.expense_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.bottom_home) {
+                startActivity(new Intent(ExpenseActivity.this, MainActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.bottom_expense) {
+                return true;
+            } else if (id == R.id.bottom_income) {
+                startActivity(new Intent(ExpenseActivity.this, IncomeActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.bottom_more) {
+                startActivity(new Intent(ExpenseActivity.this, MoreActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            }
+
+            return false;
+        });
+
 
         // Setting up the database reference
         this.dbRef = FirebaseFirestore.getInstance();

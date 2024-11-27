@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -43,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Button addIncomeBtn;
     private Button addExpenseBtn;
 
-    private LinearLayout expenses;
-    private LinearLayout incomes;
-    private LinearLayout more;
+    private BottomNavigationView bottomNavigationView;
 
     private double totalIncome;
     private double totalExpense;
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_activity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -70,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
         this.addIncomeBtn = findViewById(R.id.addIncomeButton);
         this.addExpenseBtn = findViewById(R.id.addExpenseButton);
 
-        this.expenses = findViewById(R.id.expenses);
-        this.incomes = findViewById(R.id.incomes);
-        this.more = findViewById(R.id.more);
+        this.bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         this.totalIncome = 0;
         this.totalExpense = 0;
@@ -97,29 +94,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        this.expenses.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 Intent intent = new Intent(MainActivity.this, ExpenseActivity.class);
-                 startActivity(intent);
-             }
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.bottom_home) {
+                return true;
+            } else if (id == R.id.bottom_expense) {
+                startActivity(new Intent(MainActivity.this, ExpenseActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.bottom_income) {
+                startActivity(new Intent(MainActivity.this, IncomeActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.bottom_more) {
+                startActivity(new Intent(MainActivity.this, MoreActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            }
+
+            return false;
         });
 
-        this.incomes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, IncomeActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        this.more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, MoreActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

@@ -2,163 +2,235 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="8dp"
+        android:layout_margin="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@color/white">
 
+            <!-- Doc ID -->
             <LinearLayout
                 android:id="@+id/id_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingBottom="8dp"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Doc ID: " />
+                    android:text="ID:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/entry_doc_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..." />
+                    android:text="Loading..."
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Title -->
             <LinearLayout
                 android:id="@+id/title_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Title: " />
+                    android:text="Title:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/entry_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..." />
+                    android:text="Loading..."
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Description -->
             <LinearLayout
                 android:id="@+id/desc_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingBottom="8dp"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Description: " />
+                    android:text="Description:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/entry_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..." />
+                    android:text="Loading..."
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Date -->
             <LinearLayout
                 android:id="@+id/date_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Date: " />
+                    android:text="Date:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/entry_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..." />
+                    android:text="Loading..."
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Amount -->
             <LinearLayout
                 android:id="@+id/amount_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Amount: " />
+                    android:text="Amount:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/entry_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..." />
+                    android:text="Loading..."
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Account -->
             <LinearLayout
-                android:id="@+id/sender_account_container"
+                android:id="@+id/sender_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sender: " />
+                    android:text="Sender:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/entry_sender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..." />
+                    android:text="Loading..."
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Category -->
             <LinearLayout
-                android:id="@+id/receiver_account_container"
+                android:id="@+id/receiver_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Receiver: " />
+                    android:text="Receiver:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/entry_receiver"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..." />
+                    android:text="Loading..."
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Username -->
             <LinearLayout
                 android:id="@+id/username_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:paddingBottom="8dp"
                 android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User: " />
+                    android:text="Username:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/entry_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Loading..." />
+                    android:text="Loading..."
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
             </LinearLayout>
+
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
